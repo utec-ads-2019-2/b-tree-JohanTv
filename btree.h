@@ -8,11 +8,11 @@ template <typename T>
 class BTree{
     private:
         Node<T>* root;
-        unsigned int degree;
+        size_t degree;
 
 
-        void change(Node<T>**& pointer, T data, size_t& pos){
-            pos = 0;
+        void change(Node<T>**& pointer, T data){
+            size_t pos = 0;
             size_t n = (*pointer)->keys.size();
 
             for (size_t i = 0; i < n; ++i) {
@@ -22,74 +22,64 @@ class BTree{
             pointer = &((*pointer)->childs[pos]);
         }
 
-        bool findBTree(Node<T>**& father, T data,size_t& pos){
-            Node<T>** child = &root;
-            //Node<T>* prev = nullptr;
-            while ( (*child) ) {
-                if (binary_search((*child)->keys.begin(), (*child)->keys.end(), data)) return true;
+        bool findBTree(Node<T>**& pointer, T data){
+            while ( (*pointer) ) {
+                if (binary_search((*pointer)->keys.begin(), (*pointer)->keys.end(), data)) return true;
 
-                if ((*child)->isLeaf) break;
-                else{
-                    father = child;
-                    change(child,data,pos);
-                    /*prev = child;
-                    change(child, data, pos);
-                    if(child != nullptr) father = prev;
-                */
-                }
+                if ((*pointer)->isLeaf) break;
+                else change(pointer,data);
             }
             return false;
         }
+
+        void insertInBTree(Node<T>** pointer, T data){
+            (*pointer)->insertData(data);
+            checkBTree(pointer);
+        }
+
+        void checkBTree(Node<T>** pointer){
+            if(! isGood(*pointer) ){
+                auto save = *pointer;
+
+                if( (*pointer)->father == nullptr ){
+                    (*pointer)->split();
+
+                    save->father->childs[0] = save;
+                    root = save->father;
+                }
+                else (*pointer)->split();
+
+                if(save->father != nullptr) checkBTree(&(save->father));
+            }
+        }
+
+        bool isGood(Node<T>* Node){
+            return Node->keys.size() <= degree - 1;
+        }
+
+
 
     public:
         BTree(unsigned int degree) : degree(degree){
             root = nullptr;
         };
 
-        bool isGood(Node<T>* Node){
-            return Node->isLeaf;
-        }
-
-        void insertInBTree(Node<T>** pointer, T data, size_t pos){
-
-            if( pointer == nullptr ){
-                root->insertData(data);
-                if(!isGood(root)){
-
-                    int mid = root->keys.size()/2;
-                    T value = root->keys[mid];
-
-                    Node<T>* newFather = new Node<T>(degree, value, false);
-                    vector<T> otherVector(root->keys.begin()+(mid+1),root->keys.end());
-
-                    Node<T>* otherChild = new Node<T>(degree, otherVector, true);
-                    root->keys.erase(root->keys.begin()+mid,root->keys.end());
-
-                    root->isLeaf = true;
-
-                    newFather->childs[0] = root;
-                    newFather->childs[1] = otherChild;
-                    root = newFather;
-                }
-            }
-            else{
-                (*pointer)->childs[pos]->insertData(data);
-
-            }
-
-        }
-
         void insert(T data) {
-            Node<T>** pointer = nullptr;
-            size_t pos = 0;
-
-            if(!findBTree(pointer, data, pos)){
-                if( pointer == nullptr ){
-                    if (root == nullptr ) root = new Node<T>(degree);
+            Node<T>** pointer = &root;
+            if(!findBTree(pointer, data)){
+                if( (*pointer) == nullptr ){
+                    (*pointer) = new Node<T>(degree, nullptr);
                 }
-                insertInBTree(pointer, data, pos);
+                insertInBTree(pointer, data);
             }
         }
+
+        void print() {
+
+
+        }
+
+
         /*
         T search(T data) {
 
