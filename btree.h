@@ -46,7 +46,7 @@ class BTree{
         }
 
         void checkBTree(Node<T>** pointer){
-            if( !isGood(*pointer) ){
+            if( problemNode(*pointer) ){
                 auto father = findFather((*pointer));
                 auto save = father;
                 if( father == nullptr ){
@@ -68,8 +68,8 @@ class BTree{
             checkBTree(pointer);
         }
 
-        bool isGood(Node<T>* Node){
-            return Node->keys.size() <= degree - 1;
+        bool problemNode(Node<T>* Node){
+            return !(Node->keys.size() <= degree - 1);
         }
 
         void printKeys(Node<T>* node){
