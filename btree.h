@@ -36,15 +36,14 @@ class BTree{
             Node<T>** pointer = &root;
             Node<T>* father = nullptr;
             while ( (*pointer) ) {
-                if ( (*pointer) == nodeChild ) return father;
-
-                if ((*pointer)->isLeaf) break;
+                if ( (*pointer) == nodeChild ) break;
                 else{
                     father = *pointer;
                     change(pointer,nodeChild->keys[0]);
                 }
             }
             return father;
+
         }
 
         void checkBTree(Node<T>** pointer){

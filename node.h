@@ -15,7 +15,6 @@ class Node {
 
     vector<T> keys;
     vector<Node<T>*> childs;
-    //Node<T>* father;
 
     bool isLeaf;
 
@@ -40,18 +39,15 @@ class Node {
 
     public: 
         Node(unsigned int size, bool isLeaf = true) : size(size), isLeaf(isLeaf) {
-            //this->father = father;
             childs.push_back(nullptr);
         }
         Node(unsigned int size, T data, bool isLeaf = true) : size(size), isLeaf(isLeaf) {
-            //this->father = nullptr;
             childs.push_back(nullptr);
 
             keys.push_back(data);
             childs.push_back(nullptr);
         }
         Node(unsigned int size, vector<T> otherKeys, vector<Node<T>*> otherChilds, bool isLeaf = true) : size(size), isLeaf(isLeaf) {
-            //this->father = father;
             keys.insert(keys.begin(),otherKeys.begin(),otherKeys.end());
             childs.insert(childs.begin(),otherChilds.begin(),otherChilds.end());
         }
@@ -81,9 +77,6 @@ class Node {
             father->posCorrectChilds(keys.back(),newNode->keys[0], newNode);
             keys.pop_back(); //split complete
         }
-
-
-        //void setState(bool isLeaf){ this->isLeaf = isLeaf; }
 
     friend class BTree<T>;
 };

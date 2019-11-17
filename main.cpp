@@ -7,7 +7,7 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    BTree<int> MiArbol(7);
+    BTree<int> MiArbol(4);
     srand(time(nullptr));
     int n = 35;
     for(int i = 1; i <= n; ++i){
