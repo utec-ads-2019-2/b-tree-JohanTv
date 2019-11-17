@@ -15,7 +15,7 @@ class Node {
 
     vector<T> keys;
     vector<Node<T>*> childs;
-    Node<T>* father;
+    //Node<T>* father;
 
     bool isLeaf;
 
@@ -39,19 +39,19 @@ class Node {
     }
 
     public: 
-        Node(unsigned int size, Node<T>* father, bool isLeaf = true) : size(size), isLeaf(isLeaf) {
-            this->father = father;
+        Node(unsigned int size, bool isLeaf = true) : size(size), isLeaf(isLeaf) {
+            //this->father = father;
             childs.push_back(nullptr);
         }
-        Node(unsigned int size,Node<T>* father, T data, bool isLeaf = true) : size(size), isLeaf(isLeaf) {
-            this->father = nullptr;
+        Node(unsigned int size, T data, bool isLeaf = true) : size(size), isLeaf(isLeaf) {
+            //this->father = nullptr;
             childs.push_back(nullptr);
 
             keys.push_back(data);
             childs.push_back(nullptr);
         }
-        Node(unsigned int size,Node<T>* father, vector<T> otherKeys, vector<Node<T>*> otherChilds, bool isLeaf = true) : size(size), isLeaf(isLeaf) {
-            this->father = father;
+        Node(unsigned int size, vector<T> otherKeys, vector<Node<T>*> otherChilds, bool isLeaf = true) : size(size), isLeaf(isLeaf) {
+            //this->father = father;
             keys.insert(keys.begin(),otherKeys.begin(),otherKeys.end());
             childs.insert(childs.begin(),otherChilds.begin(),otherChilds.end());
         }
@@ -62,17 +62,16 @@ class Node {
 
             auto n = posCorrect(data);
             childs.insert(childs.begin()+n, nullptr);
-
         }
 
-        void split(){
-            if(father == nullptr) father = new Node<T>(size, nullptr, false);
+        void split(Node<T>*& father){
+            if(father == nullptr) father = new Node<T>(size, false);
 
             size_t mid = keys.size()/2;
             vector<T> vectorKeys(keys.begin()+(mid+1), keys.end());
             vector<Node<T>*> vectorChilds(childs.begin()+(mid+1), childs.end());
 
-            Node<T>* newNode = new Node<T>(size, father, vectorKeys, vectorChilds);
+            Node<T>* newNode = new Node<T>(size, vectorKeys, vectorChilds);
 
             keys.erase(keys.begin()+(mid+1),keys.end());
             childs.erase(childs.begin()+(mid+1),childs.end());

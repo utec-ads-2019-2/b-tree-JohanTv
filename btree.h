@@ -32,25 +32,42 @@ class BTree{
             return false;
         }
 
-        void insertInBTree(Node<T>** pointer, T data){
-            (*pointer)->insertData(data);
-            checkBTree(pointer);
+        Node<T>* findFather(Node<T>* nodeChild){
+            Node<T>** pointer = &root;
+            Node<T>* father = nullptr;
+            while ( (*pointer) ) {
+                if ( (*pointer) == nodeChild ) return father;
+
+                if ((*pointer)->isLeaf) break;
+                else{
+                    father = *pointer;
+                    change(pointer,nodeChild->keys[0]);
+                }
+            }
+            return father;
         }
 
         void checkBTree(Node<T>** pointer){
-            if(! isGood(*pointer) ){
-                auto save = *pointer;
+            if( !isGood(*pointer) ){
+                auto father = findFather((*pointer));
+                auto save = father;
+                if( father == nullptr ){
+                    (*pointer)->split( father );
 
-                if( (*pointer)->father == nullptr ){
-                    (*pointer)->split();
-
-                    save->father->childs[0] = save;
-                    root = save->father;
+                    father->childs[0] =(*pointer);
+                    root = father;
                 }
-                else (*pointer)->split();
+                else (*pointer)->split( father );
 
-                if(save->father != nullptr) checkBTree(&(save->father));
+                if(save != nullptr){
+                    checkBTree(&(save));
+                }
             }
+        }
+
+        void insertInBTree(Node<T>** pointer, T data){
+            (*pointer)->insertData(data);
+            checkBTree(pointer);
         }
 
         bool isGood(Node<T>* Node){
@@ -68,15 +85,21 @@ class BTree{
             Node<T>** pointer = &root;
             if(!findBTree(pointer, data)){
                 if( (*pointer) == nullptr ){
-                    (*pointer) = new Node<T>(degree, nullptr);
+                    (*pointer) = new Node<T>(degree);
                 }
                 insertInBTree(pointer, data);
             }
         }
 
-        void print() {
+        void printKeys(Node<T>* node){
+            for (int i = 0; i <= node->keys.size(); ++i) {
+                if(node->childs[i]) printKeys(node->childs[i]);
+                if(i != node->keys.size()) cout<<node->keys[i]<<" ";
+            }
+        }
 
-
+        void print(){
+            printKeys(root);
         }
 
 
@@ -87,9 +110,6 @@ class BTree{
 
         bool remove(int k) {
 
-        }
-
-        void print() {
         }
 
         ~BTree();*/

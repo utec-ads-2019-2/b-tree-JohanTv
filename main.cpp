@@ -1,16 +1,19 @@
 #include <iostream>
 
 #include "btree.h"
+#include <ctime>
+#include <cstdlib>
 
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    BTree<int> MiArbol(4);
-    int n = 20;
-    for(int i = 0; i < n; ++i){
-        MiArbol.insert(2*i);
+    BTree<int> MiArbol(7);
+    srand(time(nullptr));
+    int n = 35;
+    for(int i = 1; i <= n; ++i){
+        MiArbol.insert(1+rand()%200);
     }
-    cout<<"Holi"<<endl;
+    MiArbol.print();
     /*MiArbol.insert(45);
     MiArbol.insert(75);
     MiArbol.insert(100);
