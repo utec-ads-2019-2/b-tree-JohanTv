@@ -5,6 +5,10 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    system("pause");
-    return EXIT_SUCCESS;
+    BTree<int> MiArbol(4);
+    MiArbol.insert(12);
+    MiArbol.insert(21);
+    MiArbol.insert(42);
+    MiArbol.insert(47);
+    MiArbol.insert(70);
 }
