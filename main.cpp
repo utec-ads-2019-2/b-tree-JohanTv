@@ -11,9 +11,11 @@ int main(int argc, char *argv[]) {
     srand(time(nullptr));
     int n = 35;
     for(int i = 1; i <= n; ++i){
-        MiArbol.insert(1+rand()%200);
+        MiArbol.insert(i);
     }
-    MiArbol.print();
+    for (int j = n; j > 0; --j) {
+        cout<<MiArbol.search(j)<<" ";
+    }
     /*MiArbol.insert(45);
     MiArbol.insert(75);
     MiArbol.insert(100);

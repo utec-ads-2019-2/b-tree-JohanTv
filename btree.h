@@ -10,7 +10,6 @@ class BTree{
         Node<T>* root;
         size_t degree;
 
-
         void change(Node<T>**& pointer, T data){
             size_t pos = 0;
             size_t n = (*pointer)->keys.size();
@@ -73,7 +72,12 @@ class BTree{
             return Node->keys.size() <= degree - 1;
         }
 
-
+        void printKeys(Node<T>* node){
+            for (int i = 0; i <= node->keys.size(); ++i) {
+                if(node->childs[i]) printKeys(node->childs[i]);
+                if(i != node->keys.size()) cout<<node->keys[i]<<" ";
+            }
+        }
 
     public:
         BTree(unsigned int degree) : degree(degree){
@@ -90,28 +94,19 @@ class BTree{
             }
         }
 
-        void printKeys(Node<T>* node){
-            for (int i = 0; i <= node->keys.size(); ++i) {
-                if(node->childs[i]) printKeys(node->childs[i]);
-                if(i != node->keys.size()) cout<<node->keys[i]<<" ";
-            }
-        }
-
         void print(){
             printKeys(root);
         }
 
-
-        /*
         T search(T data) {
-
+            Node<T>** pointer = &root;
+            if(findBTree(pointer,data)) return data;
+            else throw new invalid_argument("No encontrado");
         }
-
-        bool remove(int k) {
-
-        }
-
-        ~BTree();*/
+        /*
+        bool remove(int k) {}
+        ~BTree();
+         */
 };
 
 #endif
