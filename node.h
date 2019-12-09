@@ -6,6 +6,7 @@ class BTree;
 
 #include <vector>
 #include <algorithm>
+#include <queue>
 
 using namespace std;
 
@@ -77,6 +78,31 @@ class Node {
             father->posCorrectChilds(keys.back(),newNode->keys[0], newNode);
             keys.pop_back(); //split complete
         }
+
+        void recorrerNodes() {
+            queue<pair<Node<T>*, int>> next;
+            next.push(pair<Node<T>*, int>(this, 0));
+
+            while (!next.empty()) {
+                auto temp = next.front();
+                next.pop();
+
+                temp.first->printIndexes(temp.second);
+
+                for (int i = 0; i < temp.first->childs.size(); i++) {
+                    next.push(pair<Node<T>*, int>(temp.first->childs[i], temp.second + 2));
+                }
+
+                cout << endl;
+            }  
+    }
+
+    void printIndexes(int level) {
+        cout << level << ": ";
+        for (int i = 0; i < keys.size(); i++) {
+            cout << keys[i] << " ";
+        }
+    }
 
     friend class BTree<T>;
 };

@@ -95,7 +95,10 @@ class BTree{
         }
 
         void print(){
-            printKeys(root);
+            //printKeys(root);
+            if (root != nullptr) {
+                root->recorrerNodes();
+            }
         }
 
         T search(T data) {
@@ -103,6 +106,8 @@ class BTree{
             if(findBTree(pointer,data)) return data;
             else throw new invalid_argument("No encontrado");
         }
+
+        // Falta destructor
         /*
         bool remove(int k) {}
         ~BTree();
